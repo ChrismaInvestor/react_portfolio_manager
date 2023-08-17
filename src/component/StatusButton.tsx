@@ -38,14 +38,14 @@ export default function StatusButton(props: Props) {
     case "READY":
       return (
         <Button variant="contained" color="primary" onClick={submit}>
-          下单
+          试算
         </Button>
       );
 
     default:
       return (
         <Button variant="contained" color="primary" disabled>
-          下单
+          试算
         </Button>
       );
   }

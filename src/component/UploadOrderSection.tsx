@@ -1,5 +1,5 @@
 import { Grid, Paper, Typography } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import React, { ReactNode } from "react";
 import { useDropzone } from "react-dropzone";
 import * as XLSX from "xlsx";
@@ -12,17 +12,19 @@ async function handleFileInputChange(file: File) {
   if (!!firstSheetName) {
     const worksheet = workbook.Sheets[firstSheetName];
     if (!!worksheet) {
-      const sheetData = XLSX.utils.sheet_to_json(worksheet);
+      const sheetData: any[] = XLSX.utils.sheet_to_json(worksheet);
       for (let i = 0; i < sheetData.length; i++) {
-        // sheetData[i].id=i+1;
+        sheetData[i].id = i + 1;
       }
+      return sheetData;
     }
   }
+  return [];
 }
 
 const columns: GridColDef[] = [
-  { field: "证券代码", headerName: "证券代码", width: 200 },
-  { field: "证券名称", headerName: "证券名称", width: 200 },
+  { field: "code", headerName: "证券代码", width: 200 },
+  { field: "name", headerName: "证券名称", width: 200 },
 ];
 
 export default function UploadOrderSection() {
@@ -39,6 +41,19 @@ export default function UploadOrderSection() {
     });
     return ans;
   }, [acceptedFiles]);
+
+  const [data, setData] = React.useState<GridRowsProp>([]);
+
+  React.useEffect(() => {
+    if (!!acceptedFiles[0]) {
+      setData([]);
+      const data = handleFileInputChange(acceptedFiles[0]);
+      data.then((record) => {
+        console.log(record);
+        setData(record);
+      });
+    }
+  }, [acceptedFiles[0]]);
 
   const [buttonStatus, setButtonStatus] = React.useState<ButtonStatus>("");
 
@@ -60,8 +75,8 @@ export default function UploadOrderSection() {
       <Grid item xs={4}>
         <StatusButton buttonStatus={buttonStatus} submit={() => {}} />
       </Grid>
-      <Grid item xs={12} sx={{ height: 600 }}>
-        <DataGrid columns={columns} rows={[]} />
+      <Grid item xs={12} sx={{ height: 800 }}>
+        <DataGrid columns={columns} rows={data} />
       </Grid>
       <Grid item xs={4}></Grid>
     </Grid>
