@@ -1,18 +1,4 @@
-import React from "react";
 import "./App.css";
-import {
-  Container,
-  Drawer,
-  Grid,
-  List,
-  ListItem,
-  Stack,
-  Typography,
-} from "@mui/material";
-import UploadOrder from "./component/UploadOrderSection";
-import HoldingsSection from "./component/HoldingsSection";
-import HomeRoundedIcon from "@mui/icons-material/Home";
-import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import Routes from "./routes";
 import { HashRouter } from "react-router-dom";
 
