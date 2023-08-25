@@ -2,29 +2,16 @@ import React from "react";
 import { Portfolio } from "./AddPortfolioSection";
 import ShowPortfolioCard from "./ShowPortfolioCard";
 import { Box, List, ListItemButton, Stack } from "@mui/material";
-import { BASE_URL } from "../constant/Constant";
+import { listPortfolios } from "../api/ListPortfolios";
 
 export default function ShowPortfoliosSection() {
   const [portfolios, setPortfolios] = React.useState<Portfolio[]>([]);
 
-  const listPortfolios = async () => {
-    const res = await fetch(BASE_URL + "portfolio", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (res.status === 200) {
-      const result: Portfolio[] = await res.json();
-      setPortfolios(result);
-    }
-  };
   React.useEffect(() => {
     console.log("Place holding");
-    listPortfolios();
-    // const res = await fetch(BASE_URL + "portfolio", {
-    //     method: "GET",
-    //     headers: { "Content-Type": "application/json" },
-    //   });
+    listPortfolios().then((portfolios) => {
+      portfolios && setPortfolios(portfolios);
+    });
   }, []);
 
   return (

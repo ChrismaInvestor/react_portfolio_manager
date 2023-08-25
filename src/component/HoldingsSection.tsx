@@ -1,6 +1,9 @@
 import { Grid } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import SingleSelect from "./SingleSelect";
+import React from "react";
+import { listPortfolios } from "../api/ListPortfolios";
+import { Portfolio } from "./AddPortfolioSection";
 
 const columns: GridColDef[] = [
   { field: "code", headerName: "证券代码", width: 100 },
@@ -11,10 +14,21 @@ const columns: GridColDef[] = [
 ];
 
 export default function HoldingsSection() {
+  const [portfolioOptions, setPortfolioOptions] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    listPortfolios().then((portfolios) => {
+      const tmp = portfolios?.map(function (portfolio) {
+        return portfolio.name;
+      });
+      tmp && setPortfolioOptions(tmp);
+    });
+  }, []);
+
   return (
     <Grid container spacing={2} sx={{ p: 2 }}>
       <Grid item xs={12}>
-        <SingleSelect placeholder="选择投资组合" options={[]}/>
+        <SingleSelect placeholder="选择投资组合" options={portfolioOptions} />
       </Grid>
       <Grid item xs={6}>
         当前现金:{" "}
