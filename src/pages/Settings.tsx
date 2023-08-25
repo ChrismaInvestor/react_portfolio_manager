@@ -1,13 +1,13 @@
 import { Grid } from "@mui/material";
 import React from "react";
 import AddPortfolioSection from "../component/AddPortfolioSection";
+import ShowPortfoliosSection from "../component/ShowPortfoliosSection";
 
 export default function Settings() {
-  const formRef = React.useRef<HTMLFormElement>(null);
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
-        Test
+        <ShowPortfoliosSection />
       </Grid>
       <Grid item xs={6}>
         <AddPortfolioSection />

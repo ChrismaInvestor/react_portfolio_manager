@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { BASE_URL } from "../constant/Constant";
 
-type Portfolio = {
+export type Portfolio = {
   name: string;
   description: string;
   account: string;
@@ -36,7 +36,7 @@ export default function AddPortfolioSection() {
 
   const addPortfolio = async () => {
     if (formRef.current?.reportValidity()) {
-      const res = await fetch(BASE_URL + "", {
+      const res = await fetch(BASE_URL + "portfolio", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(portfolio),
