@@ -8,6 +8,9 @@ import {
 } from "@mui/material";
 import React from "react";
 import { BASE_URL } from "../constant/Constant";
+import { useMutation } from "@tanstack/react-query";
+import { LoadingButton } from "@mui/lab";
+import SaveIcon from "@mui/icons-material/Save";
 
 export type Portfolio = {
   name: string;
@@ -34,18 +37,17 @@ export default function AddPortfolioSection() {
     }));
   };
 
-  const addPortfolio = async () => {
-    if (formRef.current?.reportValidity()) {
-      const res = await fetch(BASE_URL + "portfolio", {
+  const mutation = useMutation({
+    mutationFn: () => {
+      return fetch(BASE_URL + "portfolio", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(portfolio),
       });
+    },
+  });
 
-      if (res.status === 200) {
-      }
-    }
-  };
+  console.log(mutation.isLoading);
 
   return (
     <Paper sx={{ m: 2, p: 2 }}>
@@ -88,13 +90,29 @@ export default function AddPortfolioSection() {
             />
           </Grid>
           <Grid item xs={12}>
-            <Button
-              variant="contained"
-              sx={{ width: "25%" }}
-              onClick={addPortfolio}
-            >
-              新增
-            </Button>
+            {mutation.isLoading ? (
+              <LoadingButton
+                loading={mutation.isLoading}
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+                variant="contained"
+                disabled
+              >
+                <span>创建中</span>
+              </LoadingButton>
+            ) : (
+              <Button
+                variant="contained"
+                sx={{ width: "25%" }}
+                onClick={() => {
+                  if (formRef.current?.reportValidity()) {
+                    mutation.mutate();
+                  }
+                }}
+              >
+                新增
+              </Button>
+            )}
           </Grid>
         </Grid>
       </form>

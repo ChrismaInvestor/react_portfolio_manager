@@ -8,7 +8,7 @@ type Props = {
 export default function SingleSelect(props: Props) {
   const { placeholder, options } = props;
   return (
-    <FormControl sx={{ m: 1, width: "100%" }} fullWidth>
+    <FormControl sx={{ width: "100%" }} fullWidth>
       <InputLabel id="select-label">{placeholder}</InputLabel>
       <Select labelId="select-label" id="single-select" label={placeholder}>
         {options.map((option) => (
