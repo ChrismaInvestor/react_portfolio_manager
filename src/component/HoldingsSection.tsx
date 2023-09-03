@@ -3,9 +3,9 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import SingleSelect from "./SingleSelect";
 import React from "react";
 import { listPortfolios } from "../api/ListPortfolios";
-import { Portfolio } from "./AddPortfolioSection";
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "../constant/Constant";
+import { OrderPlacementContext } from "../context/OrderPlacementContext";
 
 const columns: GridColDef[] = [
   { field: "code", headerName: "证券代码", width: 100 },
@@ -16,6 +16,8 @@ const columns: GridColDef[] = [
 ];
 
 export default function HoldingsSection() {
+  const { state, dispatch } = React.useContext(OrderPlacementContext);
+
   const [portfolioOptions, setPortfolioOptions] = React.useState<string[]>([]);
   const [currentPortfolio, setCurrentPortfolio] = React.useState<string>();
 
@@ -28,11 +30,23 @@ export default function HoldingsSection() {
     });
   }, []);
 
-  const { isLoading, data } = useQuery(["getDynamics", currentPortfolio], () =>
-    fetch(
-      BASE_URL + "portfolio/dynamics?currentPortfolio=" + currentPortfolio
-    ).then((res) => res.json())
-  );
+  const { isLoading, data } = useQuery({
+    queryKey: ["getDynamics", currentPortfolio],
+    queryFn: () =>
+      fetch(
+        BASE_URL + "portfolio/dynamics?currentPortfolio=" + currentPortfolio
+      ).then((res) => res.json()),
+    enabled: !!currentPortfolio,
+  });
+
+  React.useMemo(() => {
+    dispatch &&
+      dispatch({ type: "selectPortfolio", payload: currentPortfolio });
+  }, [currentPortfolio]);
+  
+  if (isLoading && !!currentPortfolio) {
+    return <p>Loading...</p>;
+  }
 
   console.log(data);
 
@@ -43,7 +57,7 @@ export default function HoldingsSection() {
           placeholder="选择投资组合"
           options={portfolioOptions}
           setValue={setCurrentPortfolio}
-          value={currentPortfolio}
+          value={state?.currentPortfolio}
         />
       </Grid>
       <Grid item xs={6}>
@@ -58,8 +72,11 @@ export default function HoldingsSection() {
       <Grid item xs={6}>
         收益率:{data && data.profitMargin}
       </Grid>
-      <Grid item xs={12}>
-        <DataGrid columns={columns} rows={[]} />
+      <Grid item xs={12} sx={{ height: 400 }}>
+        <DataGrid
+          columns={columns}
+          rows={data && !!data.postions ? data.postions : []}
+        />
       </Grid>
     </Grid>
   );

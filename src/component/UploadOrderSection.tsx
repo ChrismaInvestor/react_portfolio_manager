@@ -4,6 +4,9 @@ import React, { ReactNode } from "react";
 import { useDropzone } from "react-dropzone";
 import * as XLSX from "xlsx";
 import StatusButton, { ButtonStatus } from "./StatusButton";
+import { useMutation } from "@tanstack/react-query";
+import { BASE_URL } from "../constant/Constant";
+import { OrderPlacementContext } from "../context/OrderPlacementContext";
 
 async function handleFileInputChange(file: File) {
   const data = await file.arrayBuffer();
@@ -29,6 +32,8 @@ const columns: GridColDef[] = [
 
 export default function UploadOrderSection() {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+
+  const { state } = React.useContext(OrderPlacementContext);
 
   const files = React.useMemo(() => {
     const ans: ReactNode[] = [];
@@ -57,6 +62,25 @@ export default function UploadOrderSection() {
 
   const [buttonStatus, setButtonStatus] = React.useState<ButtonStatus>("");
 
+  const mutation = useMutation({
+    mutationFn: () => {
+      return fetch(BASE_URL + "position", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          positions: data,
+          portfolio: state?.currentPortfolio,
+        }),
+      });
+    },
+  });
+
+  React.useMemo(() => {
+    if (data.length > 0) {
+      setButtonStatus("READY");
+    }
+  }, [data]);
+
   return (
     <Grid container spacing={2} sx={{ p: 2 }}>
       <Grid item xs={4}>
@@ -73,7 +97,16 @@ export default function UploadOrderSection() {
         </aside>
       </Grid>
       <Grid item xs={4}>
-        <StatusButton buttonStatus={buttonStatus} submit={() => {}} />
+        <StatusButton
+          buttonStatus={buttonStatus}
+          submit={() => {
+            const post = {
+              data: data,
+              portfolio: state?.currentPortfolio,
+            };
+            mutation.mutate();
+          }}
+        />
       </Grid>
       <Grid item xs={12} sx={{ height: 800 }}>
         <DataGrid columns={columns} rows={data} />

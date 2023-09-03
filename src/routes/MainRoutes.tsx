@@ -8,7 +8,7 @@ import MainLayout from "../layout/MainLayout";
 const OrderPlacementPage = Loadable(
   lazy(() => import("../pages/OrderPlacementPage"))
 );
-const Settings = Loadable(lazy(() => import("../pages/Settings")));
+const SettingsPage = Loadable(lazy(() => import("../pages/SettingsPage")));
 
 const MainRoutes = {
   path: "/",
@@ -24,7 +24,7 @@ const MainRoutes = {
     },
     {
       path: "/settings/",
-      element: <Settings />,
+      element: <SettingsPage />,
     },
   ],
 };
