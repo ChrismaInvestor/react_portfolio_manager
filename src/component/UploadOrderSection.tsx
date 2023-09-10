@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import { Dialog, DialogTitle, Grid, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import React, { ReactNode } from "react";
 import { useDropzone } from "react-dropzone";
@@ -7,6 +7,7 @@ import StatusButton, { ButtonStatus } from "./StatusButton";
 import { useMutation } from "@tanstack/react-query";
 import { BASE_URL } from "../constant/Constant";
 import { OrderPlacementContext } from "../context/OrderPlacementContext";
+import PreorderDialog from "./PreorderDialog";
 
 async function handleFileInputChange(file: File) {
   const data = await file.arrayBuffer();
@@ -34,6 +35,8 @@ export default function UploadOrderSection() {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
 
   const { state } = React.useContext(OrderPlacementContext);
+
+  const [orders, setOrders] = React.useState([]);
 
   const files = React.useMemo(() => {
     const ans: ReactNode[] = [];
@@ -71,7 +74,14 @@ export default function UploadOrderSection() {
           positions: data,
           portfolio: state?.currentPortfolio,
         }),
-      });
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          for (let i = 0; i < data.length; i++) {
+            data[i].id = i + 1;
+          }
+          setOrders(data);
+        });
     },
   });
 
@@ -100,10 +110,6 @@ export default function UploadOrderSection() {
         <StatusButton
           buttonStatus={buttonStatus}
           submit={() => {
-            const post = {
-              data: data,
-              portfolio: state?.currentPortfolio,
-            };
             mutation.mutate();
           }}
         />
@@ -111,7 +117,7 @@ export default function UploadOrderSection() {
       <Grid item xs={12} sx={{ height: 800 }}>
         <DataGrid columns={columns} rows={data} />
       </Grid>
-      <Grid item xs={4}></Grid>
+      <PreorderDialog open={orders.length > 0} data={orders} />
     </Grid>
   );
 }
