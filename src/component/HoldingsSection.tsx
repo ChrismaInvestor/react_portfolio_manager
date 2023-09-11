@@ -11,6 +11,7 @@ const columns: GridColDef[] = [
   { field: "code", headerName: "证券代码", width: 100 },
   { field: "name", headerName: "证券名称", width: 100 },
   { field: "volume", headerName: "持股数", width: 100 },
+  { field: "cost", headerName: "成本", width: 100 },
   { field: "value", headerName: "市值", width: 100 },
   { field: "profit", headerName: "盈亏", width: 100 },
 ];

@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, Grid, Paper, Typography } from "@mui/material";
+import { Grid, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import React, { ReactNode } from "react";
 import { useDropzone } from "react-dropzone";
@@ -85,6 +85,10 @@ export default function UploadOrderSection() {
     },
   });
 
+  const handleClose = () => {
+    setOrders([]);
+  };
+
   React.useMemo(() => {
     if (data.length > 0) {
       setButtonStatus("READY");
@@ -117,7 +121,11 @@ export default function UploadOrderSection() {
       <Grid item xs={12} sx={{ height: 800 }}>
         <DataGrid columns={columns} rows={data} />
       </Grid>
-      <PreorderDialog open={orders.length > 0} data={orders} />
+      <PreorderDialog
+        open={orders.length > 0}
+        data={orders}
+        handleClose={handleClose}
+      />
     </Grid>
   );
 }

@@ -15,6 +15,7 @@ import { BASE_URL } from "../constant/Constant";
 type Props = {
   open: boolean;
   data: any[];
+  handleClose: ()=>void;
 };
 
 const columns: GridColDef[] = [
@@ -26,7 +27,7 @@ const columns: GridColDef[] = [
 ];
 
 export default function PreorderDialog(props: Props) {
-  const { open, data } = props;
+  const { open, data,handleClose } = props;
 
   const { state } = React.useContext(OrderPlacementContext);
 
@@ -44,7 +45,7 @@ export default function PreorderDialog(props: Props) {
   });
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onClose={handleClose}>
       <DialogTitle>
         <Stack direction={"row"} spacing={2}>
           <Typography>试算</Typography>
