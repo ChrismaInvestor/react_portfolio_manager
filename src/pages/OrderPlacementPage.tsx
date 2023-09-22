@@ -22,13 +22,16 @@ export default function OrderPlacementPage() {
     queryFn: () =>
       fetch(
         BASE_URL + "position/order?currentPortfolio=" + state.currentPortfolio
-      ).then((res) => res.json()).then((data) => {
-        for (let i = 0; i < data.length; i++) {
-          data[i].id = i + 1;
-        }
-        return data;
-      }),
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          for (let i = 0; i < data.length; i++) {
+            data[i].id = i + 1;
+          }
+          return data;
+        }),
     enabled: !!state.currentPortfolio,
+    refetchInterval: 5000,
   });
 
   console.log(data);
@@ -44,7 +47,11 @@ export default function OrderPlacementPage() {
             <UploadOrderSection />
           </Grid>
         )}
-        {data && data.length > 0 && <OrderProcessingSection orders={data}/>}
+        {data && data.length > 0 && (
+          <Grid item xs={6}>
+            <OrderProcessingSection orders={data} />
+          </Grid>
+        )}
       </Grid>
     </OrderPlacementContext.Provider>
   );

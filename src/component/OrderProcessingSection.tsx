@@ -1,17 +1,36 @@
-import { Stack, Typography } from "@mui/material";
+import { Grid, Stack, Typography, styled } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
+  GridRenderCellParams,
   GridSlotsComponentsProps,
 } from "@mui/x-data-grid";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import React from "react";
 
+const Progress = styled("progress")(() => `background: blue,`);
+
 const columns: GridColDef[] = [
   { field: "buyOrSell", headerName: "方向", width: 80 },
   { field: "securityCode", headerName: "证券代码", width: 120 },
   { field: "securityName", headerName: "证券名称", width: 100 },
-  { field: "ratio", headerName: "完成率", width: 100 },
+  {
+    field: "ratio",
+    headerName: "完成率",
+    width: 220,
+    type: "number",
+    renderCell: (params: GridRenderCellParams<any>) => (
+        <Grid container spacing={1}>
+          <Grid item xs={10}>
+            <Progress value={String(params.value)} max="100" />
+          </Grid>
+          <Grid item xs={2}>
+            <Typography>{params.value + "%"}</Typography>
+            {/* <span>{params.value + "%"}</span> */}
+          </Grid>
+        </Grid>
+    ),
+  },
 ];
 
 type Status = "connected" | "disconnected";
