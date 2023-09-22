@@ -44,7 +44,7 @@ export default function HoldingsSection() {
     dispatch &&
       dispatch({ type: "selectPortfolio", payload: currentPortfolio });
   }, [currentPortfolio]);
-  
+
   if (isLoading && !!currentPortfolio) {
     return <p>Loading...</p>;
   }

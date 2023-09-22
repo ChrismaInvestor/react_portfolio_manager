@@ -20,15 +20,15 @@ const columns: GridColDef[] = [
     width: 220,
     type: "number",
     renderCell: (params: GridRenderCellParams<any>) => (
-        <Grid container spacing={1}>
-          <Grid item xs={10}>
-            <Progress value={String(params.value)} max="100" />
-          </Grid>
-          <Grid item xs={2}>
-            <Typography>{params.value + "%"}</Typography>
-            {/* <span>{params.value + "%"}</span> */}
-          </Grid>
+      <Grid container spacing={1}>
+        <Grid item xs={10}>
+          <Progress value={String(params.value)} max="100" />
         </Grid>
+        <Grid item xs={2}>
+          <Typography>{params.value + "%"}</Typography>
+          {/* <span>{params.value + "%"}</span> */}
+        </Grid>
+      </Grid>
     ),
   },
 ];
