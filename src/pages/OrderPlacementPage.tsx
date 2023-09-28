@@ -19,6 +19,7 @@ export default function OrderPlacementPage() {
 
   const { isLoading, data } = useQuery({
     queryKey: ["listOrders", state.currentPortfolio],
+    // queryKey: ["listOrders"],
     queryFn: () =>
       fetch(
         BASE_URL + "position/order?currentPortfolio=" + state.currentPortfolio
@@ -30,8 +31,8 @@ export default function OrderPlacementPage() {
           }
           return data;
         }),
-    enabled: !!state.currentPortfolio,
-    refetchInterval: 5000,
+    // enabled: !!state.currentPortfolio,
+    refetchInterval: 30000,
   });
 
   console.log(data);

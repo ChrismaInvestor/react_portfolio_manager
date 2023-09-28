@@ -8,9 +8,9 @@ import { BASE_URL } from "../constant/Constant";
 import { OrderPlacementContext } from "../context/OrderPlacementContext";
 
 const columns: GridColDef[] = [
-  { field: "code", headerName: "证券代码", width: 100 },
+  { field: "securityCode", headerName: "证券代码", width: 100 },
   { field: "name", headerName: "证券名称", width: 100 },
-  { field: "volume", headerName: "持股数", width: 100 },
+  { field: "securityShare", headerName: "持股数", width: 100 },
   { field: "cost", headerName: "成本", width: 100 },
   { field: "value", headerName: "市值", width: 100 },
   { field: "profit", headerName: "盈亏", width: 100 },
@@ -40,6 +40,15 @@ export default function HoldingsSection() {
     enabled: !!currentPortfolio,
   });
 
+  const { data: portfolio } = useQuery({
+    queryKey: ["listPositions", currentPortfolio],
+    queryFn: () =>
+      fetch(
+        BASE_URL + "portfolio/portfolio?currentPortfolio=" + currentPortfolio
+      ).then((res) => res.json()),
+    enabled: !!currentPortfolio,
+  });
+
   React.useMemo(() => {
     dispatch &&
       dispatch({ type: "selectPortfolio", payload: currentPortfolio });
@@ -48,8 +57,6 @@ export default function HoldingsSection() {
   if (isLoading && !!currentPortfolio) {
     return <p>Loading...</p>;
   }
-
-  console.log(data);
 
   return (
     <Grid container spacing={2} sx={{ p: 2 }}>
@@ -73,10 +80,10 @@ export default function HoldingsSection() {
       <Grid item xs={6}>
         收益率:{data && data.profitMargin}
       </Grid>
-      <Grid item xs={12} sx={{ height: 400 }}>
+      <Grid item xs={12} sx={{ height: 500 }}>
         <DataGrid
           columns={columns}
-          rows={data && !!data.postions ? data.postions : []}
+          rows={portfolio && !!portfolio.positions ? portfolio.positions : []}
         />
       </Grid>
     </Grid>
