@@ -35,8 +35,6 @@ export default function OrderPlacementPage() {
     refetchInterval: 30000,
   });
 
-  console.log(data);
-
   return (
     <OrderPlacementContext.Provider value={{ state, dispatch }}>
       <Grid container spacing={2}>

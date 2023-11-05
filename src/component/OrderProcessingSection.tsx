@@ -62,16 +62,20 @@ export default function OrderProcessingSection(props: Props) {
   const { orders } = props;
   const [status, setStatus] = React.useState<Status>("connected");
   return (
-    <DataGrid
-      columns={columns}
-      rows={orders ? orders : []}
-      sx={{ maxHeight: 600 }}
-      slots={{
-        footer: CustomStatusComponent,
-      }}
-      slotProps={{
-        footer: { status },
-      }}
-    />
+    <Grid container spacing={2} sx={{ p: 2 }}>
+      <Grid item xs={12}>
+        <DataGrid
+          columns={columns}
+          rows={orders ? orders : []}
+          sx={{ maxHeight: 600 }}
+          slots={{
+            footer: CustomStatusComponent,
+          }}
+          slotProps={{
+            footer: { status },
+          }}
+        />
+      </Grid>
+    </Grid>
   );
 }

@@ -3,19 +3,21 @@ import { Portfolio } from "./AddPortfolioSection";
 import ShowPortfolioCard from "./ShowPortfolioCard";
 import { Box, List, ListItemButton, Stack } from "@mui/material";
 import { listPortfolios } from "../api/ListPortfolios";
+import { SettingsContext } from "../context/SettingsContext";
 
 export default function ShowPortfoliosSection() {
   const [portfolios, setPortfolios] = React.useState<Portfolio[]>([]);
 
+  const { state } = React.useContext(SettingsContext);
+
   React.useEffect(() => {
-    console.log("Place holding");
     listPortfolios().then((portfolios) => {
       portfolios && setPortfolios(portfolios);
     });
-  }, []);
+  }, [state.updateCount]);
 
   return (
-    <Box sx={{ m: 2, p: 2 }}>
+    <Box sx={{ p: 2 }}>
       <Stack spacing={1}>
         <List disablePadding>
           {portfolios.map((portfolio, index) => (

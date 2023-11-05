@@ -1,15 +1,10 @@
-import {
-  Button,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import React from "react";
 import { BASE_URL } from "../constant/Constant";
 import { useMutation } from "@tanstack/react-query";
 import { LoadingButton } from "@mui/lab";
 import SaveIcon from "@mui/icons-material/Save";
+import { SettingsContext } from "../context/SettingsContext";
 
 export type Portfolio = {
   name: string;
@@ -19,6 +14,8 @@ export type Portfolio = {
 
 export default function AddPortfolioSection() {
   const formRef = React.useRef<HTMLFormElement>(null);
+
+  const { dispatch } = React.useContext(SettingsContext);
 
   const [portfolio, setPortfolio] = React.useState<Portfolio>({
     name: "",
@@ -46,7 +43,9 @@ export default function AddPortfolioSection() {
     },
   });
 
-  console.log(mutation.isLoading);
+  React.useMemo(() => {
+    dispatch && dispatch({ type: "countUpdate" });
+  }, [mutation.status === "success"]);
 
   return (
     <Paper sx={{ m: 2, p: 2 }}>
