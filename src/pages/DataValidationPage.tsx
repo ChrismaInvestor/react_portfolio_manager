@@ -20,11 +20,25 @@ export default function DataValidationPage() {
     },
   });
 
+  const mutation2 = useMutation({
+    mutationFn: () => {
+      return fetch(BASE_URL + "data/minPrice", {
+        method: "GET",
+      });
+    },
+    onSuccess: (data) => {
+      data.json().then((data) => setMinPriceUpdateStatus(data.data));
+    },
+  });
+
+
   const handleStockUpdateClick = () => {
     mutation.mutate();
   };
 
-  const handleMinPriceUpdateClick = () => {};
+  const handleMinPriceUpdateClick = () => {
+    mutation2.mutate();
+  };
 
   return (
     <Grid container spacing={2}>
