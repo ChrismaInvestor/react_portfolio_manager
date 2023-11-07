@@ -1,4 +1,11 @@
-import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  CircularProgress,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { BASE_URL } from "../constant/Constant";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -30,7 +37,6 @@ export default function DataValidationPage() {
       data.json().then((data) => setMinPriceUpdateStatus(data.data));
     },
   });
-
 
   const handleStockUpdateClick = () => {
     mutation.mutate();
@@ -65,14 +71,22 @@ export default function DataValidationPage() {
           onClick={handleMinPriceUpdateClick}
         >
           <Card
-            sx={{ width: "100%", height: "100%", backgroundColor: "lightYellow" }}
+            sx={{
+              width: "100%",
+              height: "100%",
+              backgroundColor: "lightYellow",
+            }}
           >
             <Typography variant="h4" alignContent={"center"}>
               分钟级价格更新
             </Typography>
-            <Typography variant="h5" alignContent={"center"}>
-              {minPriceUpdateStatus}
-            </Typography>
+            {mutation2.isLoading ? (
+              <CircularProgress />
+            ) : (
+              <Typography variant="h5" alignContent={"center"}>
+                {minPriceUpdateStatus}
+              </Typography>
+            )}
           </Card>
         </Button>
       </Grid>
