@@ -59,9 +59,13 @@ export default function DataValidationPage() {
             <Typography variant="h4" alignContent={"center"}>
               股票列表更新
             </Typography>
-            <Typography variant="h5" alignContent={"center"}>
-              {stocksUpdateStatus}
-            </Typography>
+            {mutation.isLoading ? (
+              <CircularProgress />
+            ) : (
+              <Typography variant="h5" alignContent={"center"}>
+                {stocksUpdateStatus}
+              </Typography>
+            )}
           </Card>
         </Button>
       </Grid>
