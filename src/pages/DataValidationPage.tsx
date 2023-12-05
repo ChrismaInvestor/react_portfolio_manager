@@ -1,13 +1,12 @@
 import {
   Button,
   Card,
-  CardContent,
   CircularProgress,
   Grid,
   Typography,
 } from "@mui/material";
 import { BASE_URL } from "../constant/Constant";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import React from "react";
 
 export default function DataValidationPage() {
