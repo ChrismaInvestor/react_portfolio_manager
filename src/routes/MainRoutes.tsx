@@ -4,6 +4,7 @@ import { lazy } from "react";
 import Loadable from "../component/Loadable";
 import MainLayout from "../layout/MainLayout";
 import DataValidationPage from "../pages/DataValidationPage";
+import InvestorPLPage from "../pages/InvestorPL";
 
 // dashboard routing
 const OrderPlacementPage = Loadable(
@@ -30,6 +31,10 @@ const MainRoutes = {
     {
       path: "/data",
       element: <DataValidationPage />,
+    },
+    {
+      path: "/investorPL",
+      element: <InvestorPLPage />,
     },
   ],
 };

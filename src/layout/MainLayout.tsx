@@ -73,6 +73,26 @@ export default function MainLayout() {
               </Typography>
             </Stack>
           </ListItem>
+          <ListItem key="个人收益" onClick={() => setOptPage("个人收益")}>
+            <Stack
+              spacing={1}
+              justifyContent="center"
+              alignItems="center"
+              sx={{
+                width: "100%",
+                backgroundColor:
+                  optPage === "个人收益" ? "PowderBlue" : "default",
+                borderRadius: "10%",
+              }}
+            >
+              <Link to={"/investorPL"}>
+                <DataUsageIcon />
+              </Link>
+              <Typography variant="button" align="center">
+                个人收益
+              </Typography>
+            </Stack>
+          </ListItem>
         </List>
       </Grid>
       <Grid item xs={11}>
