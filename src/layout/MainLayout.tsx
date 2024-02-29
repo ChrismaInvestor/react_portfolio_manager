@@ -3,6 +3,7 @@ import { Link, Outlet } from "react-router-dom";
 import HomeRoundedIcon from "@mui/icons-material/Home";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import DataUsageIcon from "@mui/icons-material/DataUsage";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import React from "react";
 
 export default function MainLayout() {
@@ -86,7 +87,7 @@ export default function MainLayout() {
               }}
             >
               <Link to={"/investorPL"}>
-                <DataUsageIcon />
+                <PersonSearchIcon />
               </Link>
               <Typography variant="button" align="center">
                 个人收益
