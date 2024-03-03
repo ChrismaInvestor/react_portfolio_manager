@@ -4,6 +4,7 @@ import HomeRoundedIcon from "@mui/icons-material/Home";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import DataUsageIcon from "@mui/icons-material/DataUsage";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import React from "react";
 
 export default function MainLayout() {
@@ -28,6 +29,26 @@ export default function MainLayout() {
               </Link>
               <Typography variant="button" align="center">
                 首页
+              </Typography>
+            </Stack>
+          </ListItem>
+          <ListItem key="手工下单" onClick={() => setOptPage("手工下单")}>
+            <Stack
+              spacing={1}
+              justifyContent="center"
+              alignItems="center"
+              sx={{
+                width: "100%",
+                backgroundColor:
+                  optPage === "手工下单" ? "PowderBlue" : "default",
+                borderRadius: "10%",
+              }}
+            >
+              <Link to={"/manualOrderPlacement"}>
+                <FitnessCenterIcon />
+              </Link>
+              <Typography variant="button" align="center">
+                手工下单
               </Typography>
             </Stack>
           </ListItem>
@@ -74,6 +95,7 @@ export default function MainLayout() {
               </Typography>
             </Stack>
           </ListItem>
+
           <ListItem key="个人收益" onClick={() => setOptPage("个人收益")}>
             <Stack
               spacing={1}

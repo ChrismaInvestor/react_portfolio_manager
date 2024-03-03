@@ -5,6 +5,7 @@ import Loadable from "../component/Loadable";
 import MainLayout from "../layout/MainLayout";
 import DataValidationPage from "../pages/DataValidationPage";
 import InvestorPLPage from "../pages/InvestorPL";
+import ManualPage from "../pages/ManualPage";
 
 // dashboard routing
 const OrderPlacementPage = Loadable(
@@ -31,6 +32,10 @@ const MainRoutes = {
     {
       path: "/data",
       element: <DataValidationPage />,
+    },
+    {
+      path: "/manualOrderPlacement",
+      element: <ManualPage />,
     },
     {
       path: "/investorPL",
