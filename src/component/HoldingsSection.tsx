@@ -6,6 +6,7 @@ import { listPortfolios } from "../api/ListPortfolios";
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "../constant/Constant";
 import { OrderPlacementContext } from "../context/OrderPlacementContext";
+import usePortfolioOptions from "../hook/usePortfolioOptions";
 
 const columns: GridColDef[] = [
   { field: "securityCode", headerName: "证券代码", width: 100 },
@@ -19,17 +20,9 @@ const columns: GridColDef[] = [
 export default function HoldingsSection() {
   const { state, dispatch } = React.useContext(OrderPlacementContext);
 
-  const [portfolioOptions, setPortfolioOptions] = React.useState<string[]>([]);
   const [currentPortfolio, setCurrentPortfolio] = React.useState<string>();
 
-  React.useEffect(() => {
-    listPortfolios().then((portfolios) => {
-      const tmp = portfolios?.map(function (portfolio) {
-        return portfolio.name;
-      });
-      tmp && setPortfolioOptions(tmp);
-    });
-  }, []);
+  const [portfolioOptions] = usePortfolioOptions();
 
   const { isLoading, data } = useQuery({
     queryKey: ["getDynamics", currentPortfolio],
@@ -49,7 +42,7 @@ export default function HoldingsSection() {
     enabled: !!currentPortfolio,
   });
 
-  React.useMemo(() => {
+  React.useEffect(() => {
     dispatch &&
       dispatch({ type: "selectPortfolio", payload: currentPortfolio });
   }, [currentPortfolio]);

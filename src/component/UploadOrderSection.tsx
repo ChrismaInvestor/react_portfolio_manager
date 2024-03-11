@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { BASE_URL } from "../constant/Constant";
 import { OrderPlacementContext } from "../context/OrderPlacementContext";
 import PreorderDialog from "./PreorderDialog";
+import { Order } from "../type/Order";
 
 async function handleFileInputChange(file: File) {
   const data = await file.arrayBuffer();
@@ -36,7 +37,7 @@ export default function UploadOrderSection() {
 
   const { state } = React.useContext(OrderPlacementContext);
 
-  const [orders, setOrders] = React.useState([]);
+  const [orders, setOrders] = React.useState<Order[]>([]);
 
   const files = React.useMemo(() => {
     const ans: ReactNode[] = [];
@@ -74,18 +75,18 @@ export default function UploadOrderSection() {
           positions: data,
           portfolio: state?.currentPortfolio,
         }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          for (let i = 0; i < data.length; i++) {
-            data[i].id = i + 1;
-          }
-          setOrders(data);
-        });
+      });
+    },
+    onSuccess: async (data) => {
+      const orders: Order[] = await data.json();
+      for (let i = 0; i < orders.length; i++) {
+        orders[i].id = i + 1;
+      }
+      setOrders(orders);
     },
   });
 
-  const handleClose = () => {
+  const handleDialogClose = () => {
     setOrders([]);
   };
 
@@ -123,8 +124,9 @@ export default function UploadOrderSection() {
       </Grid>
       <PreorderDialog
         open={orders.length > 0}
-        data={orders}
-        handleClose={handleClose}
+        orders={orders}
+        handleClose={handleDialogClose}
+        portfolioName={state.currentPortfolio}
       />
     </Grid>
   );

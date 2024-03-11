@@ -17,9 +17,12 @@ const initialState = {
 export default function OrderPlacementPage() {
   const [state, dispatch] = useReducer(orderPlacementReducer, initialState);
 
-  const { isLoading, data } = useQuery({
+  const {
+    isLoading,
+    isError,
+    data: ordersInProgress,
+  } = useQuery({
     queryKey: ["listOrders", state.currentPortfolio],
-    // queryKey: ["listOrders"],
     queryFn: () =>
       fetch(
         BASE_URL + "position/order?currentPortfolio=" + state.currentPortfolio
@@ -35,20 +38,28 @@ export default function OrderPlacementPage() {
     refetchInterval: 30000,
   });
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>There is error in querying data</div>;
+  }
+
   return (
     <OrderPlacementContext.Provider value={{ state, dispatch }}>
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <HoldingsSection />
         </Grid>
-        {data && data.length === 0 && (
+        {ordersInProgress.length === 0 && (
           <Grid item xs={6}>
             <UploadOrderSection />
           </Grid>
         )}
-        {data && data.length > 0 && (
+        {ordersInProgress.length > 0 && (
           <Grid item xs={6}>
-            <OrderProcessingSection orders={data} />
+            <OrderProcessingSection orders={ordersInProgress} />
           </Grid>
         )}
       </Grid>
