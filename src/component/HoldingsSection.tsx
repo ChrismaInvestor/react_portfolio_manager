@@ -2,7 +2,6 @@ import { Grid } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import SingleSelect from "./SingleSelect";
 import React from "react";
-import { listPortfolios } from "../api/ListPortfolios";
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "../constant/Constant";
 import { OrderPlacementContext } from "../context/OrderPlacementContext";

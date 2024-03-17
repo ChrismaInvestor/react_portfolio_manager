@@ -60,7 +60,7 @@ export function CustomStatusComponent(
 
 export default function OrderProcessingSection(props: Props) {
   const { orders } = props;
-  const [status, setStatus] = React.useState<Status>("connected");
+  const [status] = React.useState<Status>("connected");
   return (
     <Grid container spacing={2} sx={{ p: 2 }}>
       <Grid item xs={12}>

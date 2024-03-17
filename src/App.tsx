@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import "./App.css";
-import Routes from "./routes";
 import { HashRouter } from "react-router-dom";
+import Routes from "./routes";
 const queryClient = new QueryClient();
 function App() {
   return (
