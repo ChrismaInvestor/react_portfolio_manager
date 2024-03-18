@@ -6,6 +6,7 @@ import MainLayout from "../layout/MainLayout";
 import DataValidationPage from "../pages/DataValidationPage";
 import InvestorPLPage from "../pages/InvestorPL";
 import ManualPage from "../pages/ManualPage";
+import TradeTrail from "../pages/TradeTrail";
 
 // dashboard routing
 const OrderPlacementPage = Loadable(
@@ -40,6 +41,10 @@ const MainRoutes = {
     {
       path: "/investorPL",
       element: <InvestorPLPage />,
+    },
+    {
+      path:"/tradeTrail",
+      element: <TradeTrail/>
     },
   ],
 };
