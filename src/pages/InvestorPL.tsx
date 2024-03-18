@@ -5,6 +5,31 @@ import React from "react";
 import CustLineChart from "../component/CustLineChart";
 import { LineSeriesType } from "@mui/x-charts";
 
+function strToHash(str: string, arraySize: number) {
+  let hash = 0;
+  if (str.length === 0) {
+    return hash;
+  }
+
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    // hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
+    hash |= 0;
+  }
+  return hash % arraySize;
+}
+
+const Palettes = [
+  "#4e79a7",
+  "#f28e2c",
+  "#e15759",
+  "#76b7b2",
+  "#edc949",
+  "#ff9da7",
+  "#9c755f",
+];
+
 export default function InvestorPLPage() {
   const { isLoading, data: investors } = useQuery({
     queryKey: ["investorBook"],
@@ -64,14 +89,22 @@ export default function InvestorPLPage() {
   return (
     <Grid container spacing={2}>
       {investors.map(
-        (investor: {
-          name: string;
-          portfolioName: string;
-          shareAmount: string;
-          nav: string;
-        }) => (
-          <Grid item xs={3}>
-            <Card sx={{ backgroundColor: "lightblue" }}>
+        (
+          investor: {
+            name: string;
+            portfolioName: string;
+            shareAmount: string;
+            nav: string;
+          },
+          idx: number
+        ) => (
+          <Grid item xs={3} key={idx}>
+            <Card
+              sx={{
+                backgroundColor:
+                  Palettes[strToHash(investor.name, Palettes.length)],
+              }}
+            >
               <CardContent>
                 <Typography
                   sx={{ fontSize: 14 }}
