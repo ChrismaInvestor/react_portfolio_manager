@@ -1,6 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "../constant/Constant";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
+import React from "react";
+import CustLineChart from "../component/CustLineChart";
+import { LineSeriesType } from "@mui/x-charts";
 
 export default function InvestorPLPage() {
   const { isLoading, data: investors } = useQuery({
@@ -10,8 +13,51 @@ export default function InvestorPLPage() {
 
     refetchInterval: 30000,
   });
+  const { isLoading: isNavHistoryLoading, data: navs } = useQuery({
+    queryKey: ["navHistory"],
+    queryFn: () => fetch(BASE_URL + "portfolio/nav").then((res) => res.json()),
 
-  if (isLoading) {
+    refetchInterval: 30000,
+  });
+
+  const chartData: {
+    datesForChart: string[];
+    valuesForChart: LineSeriesType[];
+  } = React.useMemo(() => {
+    if (!navs) {
+      return {
+        datesForChart: [],
+        valuesForChart: [],
+      };
+    }
+    const dates = new Set<string>();
+    const map = new Map<string, number[]>();
+    navs.forEach((nav: any) => {
+      dates.add(nav.date);
+      if (map.has(nav.portfolioName)) {
+        map.get(nav.portfolioName)!.push(nav.nav);
+      } else {
+        map.set(nav.portfolioName, [nav.nav]);
+      }
+    });
+
+    const values: LineSeriesType[] = [];
+
+    for (const key of map.keys()) {
+      values.push({
+        type: "line",
+        data: map.get(key),
+        label: key,
+      });
+    }
+
+    return {
+      datesForChart: Array.from(dates),
+      valuesForChart: values,
+    };
+  }, [navs]);
+
+  if (isLoading || isNavHistoryLoading) {
     return <>Loading...</>;
   }
 
@@ -49,6 +95,13 @@ export default function InvestorPLPage() {
           </Grid>
         )
       )}
+      <Grid item xs={12}>
+        <CustLineChart
+          title={"净值趋势"}
+          xAxis={chartData.datesForChart}
+          value={chartData.valuesForChart}
+        />
+      </Grid>
     </Grid>
   );
 }
